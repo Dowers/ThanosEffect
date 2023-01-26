@@ -3,34 +3,19 @@ import { useRef } from 'react';
 import { Perf } from 'r3f-perf';
 import { useControls } from 'leva';
 import * as THREE from 'three';
+import vertexShader from './shaders/vertex.glsl';
+import fragmentShader from './shaders/fragment.glsl';
 
 export default function Experience() {
-	const { perfVisible } = useControls({ perfVisible: false });
-	const cube = useRef();
+	const { perfVisible } = useControls({ perfVisible: true });
 
 	const directionalLight = useRef();
 	useHelper(directionalLight, THREE.DirectionalLightHelper, 1);
 
-	const { cubePosition, cubeColour, scale, bgColour } = useControls(
-		'Cube Controls',
-		{
-			cubePosition: {
-				value: { x: 0, y: 0 }, //can add z: 0 but then you lose the joystick
-				min: -4,
-				max: 4,
-				step: 0.01,
-				joystick: 'invertY',
-			},
-			cubeColour: { value: 'indigo' },
-			bgColour: { value: 'silver' },
-			scale: {
-				value: 1,
-				step: 0.01,
-				min: 0,
-				max: 5,
-			},
-		}
-	);
+	const { colour, bgColour, wireframe } = useControls('Cube Controls', {
+		bgColour: { value: 'silver' },
+		wireframe: false,
+	});
 
 	return (
 		<>
@@ -42,16 +27,14 @@ export default function Experience() {
 				position={[1, 2, 3]}
 				intensity={2}
 			/>
-
 			<color args={[bgColour]} attach='background' />
-
-			<mesh
-				ref={cube}
-				position={[cubePosition.x, cubePosition.y, 0]}
-				scale={scale}
-			>
-				<boxGeometry />
-				<meshStandardMaterial color={cubeColour} />
+			<mesh>
+				<icosahedronGeometry args={[1, 3]} />
+				<shaderMaterial
+					fragmentShader={fragmentShader}
+					vertexShader={vertexShader}
+					wireframe={wireframe}
+				/>
 			</mesh>
 		</>
 	);
