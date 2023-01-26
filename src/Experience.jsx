@@ -57,6 +57,12 @@ export default function Experience() {
 				<shaderMaterial
 					vertexShader={vertexShader}
 					fragmentShader={fragmentShader}
+					uniforms={{
+						uTime: { value: 0 },
+						vUv: { value: [1, 1] },
+						vPosition: { value: [1, 1, 1] },
+						pixels: { value: [1, 1] },
+					}}
 				/>
 			</mesh>
 		</>
