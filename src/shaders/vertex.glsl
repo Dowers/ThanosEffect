@@ -6,11 +6,10 @@ float PI = 3.1415;
 
 void main()
 {
-    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-    vec4 viewPosition = viewMatrix * modelPosition;
-    vec4 projectionPosition = projectionMatrix * viewPosition;
-
-    gl_Position = projectionPosition;
-
     vUv = uv;
+
+    vec3 pos = position;
+    pos.x *= sin((uv.y + uv.x * uTime) * 10.0);
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
 }

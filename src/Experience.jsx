@@ -35,10 +35,11 @@ export default function Experience() {
 		wireframe: false,
 	});
 
-	// const customMaterial = useRef();
-	// useFrame((state, delta) => {
-	// 	customMaterial.current.uTime += delta * 10;
-	// });
+	const customMaterial = useRef();
+	useFrame((state, delta) => {
+		customMaterial.current.material.uniforms.uTime.value += delta;
+		// console.log(customMaterial);
+	});
 
 	return (
 		<>
@@ -51,7 +52,7 @@ export default function Experience() {
 				intensity={2}
 			/>
 			<color args={[bgColour]} attach='background' />
-			<mesh>
+			<mesh ref={customMaterial}>
 				<icosahedronGeometry args={[1, 3]} />
 				{/* <customMaterial ref={customMaterial} /> */}
 				<shaderMaterial
@@ -59,9 +60,8 @@ export default function Experience() {
 					fragmentShader={fragmentShader}
 					uniforms={{
 						uTime: { value: 0 },
-						vUv: { value: [1, 1] },
-						vPosition: { value: [1, 1, 1] },
-						pixels: { value: [1, 1] },
+						uColorStart: { value: new THREE.Color('#00ffff') },
+						uColorEnd: { value: new THREE.Color('#0000ff') },
 					}}
 				/>
 			</mesh>
