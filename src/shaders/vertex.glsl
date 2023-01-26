@@ -1,13 +1,16 @@
-const vertexShader = `
-void main() {
-  vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-  modelPosition.y += sin(modelPosition.x * 4.0) * 0.2;
+uniform float uTime;
+varying vec2 vUv;
+varying vec3 vPosition;
+uniform vec2 pixels;
+float PI = 3.1415;
 
-  vec4 viewPosition = viewMatrix * modelPosition;
-  vec4 projectedPosition = projectionMatrix * viewPosition;
+void main()
+{
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+    vec4 viewPosition = viewMatrix * modelPosition;
+    vec4 projectionPosition = projectionMatrix * viewPosition;
 
-  gl_Position = projectedPosition;
+    gl_Position = projectionPosition;
+
+    vUv = uv;
 }
-`
-
-export default vertexShader

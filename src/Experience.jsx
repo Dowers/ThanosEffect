@@ -1,10 +1,28 @@
-import { OrbitControls, useHelper } from '@react-three/drei';
+import { shaderMaterial, OrbitControls, useHelper } from '@react-three/drei';
+import { extend, useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import { Perf } from 'r3f-perf';
 import { useControls } from 'leva';
 import * as THREE from 'three';
 import vertexShader from './shaders/vertex.glsl';
 import fragmentShader from './shaders/fragment.glsl';
+
+console.log(vertexShader);
+console.log(fragmentShader);
+
+// const customMaterial = shaderMaterial(
+// 	{
+// 		uTime: 0,
+// 		vUv: [1, 1],
+// 		vPosition: [1, 2, 3],
+// 		pixels: [1, 2],
+// 		uPi: 3.141592653589793238,
+// 	},
+// 	vertexShader,
+// 	fragmentShader
+// );
+
+// extend({ customMaterial });
 
 export default function Experience() {
 	const { perfVisible } = useControls({ perfVisible: true });
@@ -16,6 +34,11 @@ export default function Experience() {
 		bgColour: { value: 'silver' },
 		wireframe: false,
 	});
+
+	// const customMaterial = useRef();
+	// useFrame((state, delta) => {
+	// 	customMaterial.current.uTime += delta * 10;
+	// });
 
 	return (
 		<>
@@ -30,10 +53,10 @@ export default function Experience() {
 			<color args={[bgColour]} attach='background' />
 			<mesh>
 				<icosahedronGeometry args={[1, 3]} />
+				{/* <customMaterial ref={customMaterial} /> */}
 				<shaderMaterial
-					fragmentShader={fragmentShader}
 					vertexShader={vertexShader}
-					wireframe={wireframe}
+					fragmentShader={fragmentShader}
 				/>
 			</mesh>
 		</>
